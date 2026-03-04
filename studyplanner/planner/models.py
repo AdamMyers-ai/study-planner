@@ -33,6 +33,9 @@ class Assignment(models.Model):
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE, related_name="assignments"
     )
+    resources = models.ManyToManyField(
+        "StudyResource", blank=True, related_name="assignments"
+    )
     title = models.CharField(max_length=150)
     due_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="todo")
@@ -43,3 +46,19 @@ class Assignment(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class StudyResource(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    url = models.URLField(blank=True)  # optional
+    resource_type = models.CharField(
+        max_length=50, blank=True
+    )  # video/article/slides/textbook
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("resource-detail", kwargs={"pk": self.id})
