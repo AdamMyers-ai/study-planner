@@ -9,7 +9,7 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse_lazy
-from .models import Course, Assignment
+from .models import Course, Assignment, StudyResource
 
 
 # Create your views here.
@@ -93,7 +93,7 @@ class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "assignments/form.html"
 
     def get_queryset(self):
-        return Assignment.objects.filter(course_user=self.request.user)
+        return Assignment.objects.filter(course__user=self.request.user)
 
     def get_success_url(self):
         return self.object.course.get_absolute_url()
@@ -104,7 +104,52 @@ class AssignmentDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "assignments/confirm_delete.html"
 
     def get_queryset(self):
-        return Assignment.objects.filter(course_user=self.request.user)
+        return Assignment.objects.filter(course__user=self.request.user)
 
     def get_success_url(self):
         return self.object.course.get_absolute_url()
+
+
+class StudyResourceListView(LoginRequiredMixin, ListView):
+    model = StudyResource
+    template_name = "resources/index.html"
+    context_object_name = "resources"
+
+    def get_queryset(self):
+        return StudyResource.objects.filter(user=self.request.user).order_by("title")
+
+
+class StudyResourceDetailView(LoginRequiredMixin, DetailView):
+    model = StudyResource
+    template_name = "resources/detail.html"
+
+    def get_queryset(self):
+        return StudyResource.objects.filter(user=self.request.user)
+
+
+class StudyResourceCreateView(LoginRequiredMixin, CreateView):
+    model = StudyResource
+    fields = ["title", "url", "resource_type", "description"]
+    template_name = "resources/form.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class StudyResourceUpdateView(LoginRequiredMixin, UpdateView):
+    model = StudyResource
+    fields = ["title", "url", "resource_type", "description"]
+    template_name = "resources/form.html"
+
+    def get_queryset(self):
+        return StudyResource.objects.filter(user=self.request.user)
+
+
+class StudyResourceDeleteView(LoginRequiredMixin, DeleteView):
+    model = StudyResource
+    template_name = "resources/confirm_delete.html"
+    success_url = reverse_lazy("resource-list")
+
+    def get_queryset(self):
+        return StudyResource.objects.filter(user=self.request.user)
