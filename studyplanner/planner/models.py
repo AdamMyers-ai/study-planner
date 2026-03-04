@@ -29,7 +29,7 @@ class Course(models.Model):
         return reverse("course-detail", kwargs={"pk": self.id})
 
 
-class Assignments(models.Model):
+class Assignment(models.Model):
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE, related_name="assignments"
     )
