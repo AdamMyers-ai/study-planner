@@ -17,7 +17,7 @@ urlpatterns = [
     ),
     # Assignment routes
     path(
-        "courses/<int:course_id>/assignments/new",
+        "courses/<int:course_id>/assignments/new/",
         views.AssignmentCreateView.as_view(),
         name="assignment-create",
     ),
@@ -35,5 +35,27 @@ urlpatterns = [
         "assignments/<int:pk>/delete/",
         views.AssignmentDeleteView.as_view(),
         name="assignment-delete",
+    ),
+    # Resources routes
+    path("resources/", views.StudyResourceListView.as_view(), name="resource-list"),
+    path(
+        "resources/new/",
+        views.StudyResourceCreateView.as_view(),
+        name="resource-create",
+    ),
+    path(
+        "resources/<int:pk>/",
+        views.StudyResourceDetailView.as_view(),
+        name="resource-detail",
+    ),
+    path(
+        "resources/<int:pk>/edit/",
+        views.StudyResourceUpdateView.as_view(),
+        name="resource-update",
+    ),
+    path(
+        "resources/<int:pk>/delete/",
+        views.StudyResourceDeleteView.as_view(),
+        name="resource-delete",
     ),
 ]

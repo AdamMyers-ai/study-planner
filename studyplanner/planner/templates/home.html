@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Home | Study Planner{% endblock %} {%
+block content %}
+<section class="card">
+  <h1>Welcome to Study Planner</h1>
+
+  {% if user.is_authenticated %}
+  <p>Use Courses to track assignments and Resources to attach study links.</p>
+  <div class="actions">
+    <a href="{% url 'course-list' %}" class="btn">View Courses</a>
+    <a href="{% url 'resource-list' %}" class="btn btn-ghost">View Resources</a>
+  </div>
+  {% else %}
+  <p>Please log in to manage your courses and assignments.</p>
+  <div class="actions">
+    <a href="{% url 'login' %}" class="btn">Login</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

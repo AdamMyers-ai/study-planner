@@ -10,6 +10,7 @@ from django.views.generic import (
 )
 from django.urls import reverse_lazy
 from .models import Course, Assignment, StudyResource
+from .forms import AssignmentForm
 
 
 # Create your views here.
@@ -72,12 +73,17 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
 
 class AssignmentCreateView(LoginRequiredMixin, CreateView):
     model = Assignment
-    fields = ["title", "due_date", "status", "priority", "notes"]
+    form_class = AssignmentForm
     template_name = "assignments/form.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.course = Course.objects.get(id=kwargs["course_id"], user=request.user)
         return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         form.instance.course = self.course
@@ -89,11 +95,16 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
 
 class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Assignment
-    fields = ["title", "due_date", "status", "priority", "notes"]
+    form_class = AssignmentForm
     template_name = "assignments/form.html"
 
     def get_queryset(self):
         return Assignment.objects.filter(course__user=self.request.user)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def get_success_url(self):
         return self.object.course.get_absolute_url()
