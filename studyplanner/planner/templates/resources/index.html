@@ -1,0 +1,18 @@
+{% extends "base.html" %} 
+{% block content %}
+<h1>My Resources</h1>
+<p><a href="{% url 'resource-create' %}">Add Resource</a></p>
+
+<ul>
+  {% for resource in resources %}
+  <li>
+    <a href="{% url 'resource-detail' resource.id %}">{{ resource.title }}</a>
+    {% if resource.resource_type %}
+    <small>({{ resource.resource_type }})</small>
+    {% endif %}
+  </li>
+  {% empty %}
+  <li>No resources yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %} 
+{% block content %}
+<h1>{% if object %}Edit Resource{% else %}New Resource{% endif %}</h1>
+
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Save</button>
+</form>
+
+<p><a href="javascript:history.back()">Cancel</a></p>
+{% endblock %}

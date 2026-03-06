@@ -1,5 +1,9 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.shortcuts import redirect
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -16,6 +20,27 @@ from .forms import AssignmentForm
 # Create your views here.
 class HomeView(TemplateView):
     template_name = "home.html"
+
+
+def signup(request):
+    error_message = ""
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("course-list")
+        else:
+            error_message = "Invalid sign up - please try again."
+    else:
+        form = UserCreationForm()
+
+    context = {
+        "form": form,
+        "error_message": error_message,
+    }
+    return render(request, "registration/signup.html", context)
 
 
 class CourseListView(LoginRequiredMixin, ListView):
@@ -77,7 +102,9 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
     template_name = "assignments/form.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.course = Course.objects.get(id=kwargs["course_id"], user=request.user)
+        self.course = get_object_or_404(
+            Course, id=kwargs["course_id"], user=request.user
+        )
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):

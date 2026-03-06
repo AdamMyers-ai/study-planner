@@ -1,5 +1,6 @@
-{% extends "base.html" %} {% block title %}Assignment Form | Study Planner {%
-endblock %} {% block content %}
+{% extends "base.html" %}
+{% block title %}Assignment Form | Study Planner{% endblock %}
+{% block content %}
 <section class="card">
   <h1>{% if object %}Edit Assignment{% else %}New Assignment{% endif %}</h1>
 
@@ -37,7 +38,7 @@ endblock %} {% block content %}
 
     <div class="actions">
       <button class="btn" type="submit">Save</button>
-      <a href="javascript:history.back()" class="btn btn-ghost"></a>
+      <a href="javascript:history.back()" class="btn btn-ghost">Cancel</a>
     </div>
   </form>
 </section>

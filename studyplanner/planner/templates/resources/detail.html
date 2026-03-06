@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block content %}
+<h1>{{ object.title }}</h1>
+{% if object.url %}
+<p><a href="{{ object.url }}" target="_blank" rel="noopener">{{ object.url }}</a></p>
+{% endif %}
+<p>Type: {{ object.resource_type|default:"-" }}</p>
+<p>Description: {{ object.description|default:"-" }}</p>
+
+<p>
+  <a href="{% url 'resource-update' object.id %}">Edit</a>
+  <a href="{% url 'resource-delete' object.id %}">Delete</a>
+</p>
+{% endblock %}
