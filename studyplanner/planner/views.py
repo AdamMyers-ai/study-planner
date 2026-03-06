@@ -13,6 +13,7 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse_lazy
+from datetime import date, timedelta
 from .models import Course, Assignment, StudyResource
 from .forms import AssignmentForm
 
@@ -20,6 +21,21 @@ from .forms import AssignmentForm
 # Create your views here.
 class HomeView(TemplateView):
     template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        assignments = Assignment.objects.filter(course__user=self.request.user)
+
+        context["overdue"] = assignments.filter(due_date__lt=date.today()).exclude(
+            status="done"
+        )
+        context["due_this_week"] = assignments.filter(
+            due_date__lte=date.today() + timedelta(days=7)
+        )
+        context["high_priority"] = assignments.filter(priority="high")
+
+        return context
 
 
 def signup(request):
