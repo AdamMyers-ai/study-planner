@@ -4,13 +4,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Study Planner{% endblock %}</title>
+    <title>Study Planner</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
   </head>
   <body>
     <header class="site-header">
       <div class="nav-wrap">
-        <a href="{% url 'home' %}" class="brand">Study Planner</a>
+        <a href="{% url 'home' %}" class="brand">Home</a>
 
         <nav class="nav">
           {% if user.is_authenticated %}
