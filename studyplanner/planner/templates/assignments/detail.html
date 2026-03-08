@@ -15,4 +15,10 @@
   <a href="{% url 'assignment-update' assignment.id %}">Edit</a>
   <a href="{% url 'assignment-delete' assignment.id %}">Delete</a>
 </p>
-{% endblock %}
+
+{% if assignment.status != "done" %}
+<form action="{% url 'assignment-complete' assignment.id %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Mark Complete</button>
+</form>
+{% endif %} {% endblock %}

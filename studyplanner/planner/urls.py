@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
-    path("accounts/signup/", views.signup, name="signup"),
+    path("accounts/signup/", views.SignUpView.as_view(), name="signup"),
     # Course routes
     path("courses/", views.CourseListView.as_view(), name="course-list"),
     path("courses/new/", views.CourseCreateView.as_view(), name="course-create"),
@@ -36,6 +36,11 @@ urlpatterns = [
         "assignments/<int:pk>/delete/",
         views.AssignmentDeleteView.as_view(),
         name="assignment-delete",
+    ),
+    path(
+        "assignments/<int:pk>/complete/",
+        views.AssignmentCompleteView.as_view(),
+        name="assignment-complete",
     ),
     # Resources routes
     path("resources/", views.StudyResourceListView.as_view(), name="resource-list"),

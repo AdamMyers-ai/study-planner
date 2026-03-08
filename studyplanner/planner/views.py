@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.views import View
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import redirect
+from django.contrib import messages
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import (
     TemplateView,
@@ -12,6 +12,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    FormView,
 )
 from django.urls import reverse_lazy
 from datetime import date, timedelta
@@ -57,31 +58,36 @@ class HomeView(TemplateView):
         return context
 
 
-def signup(request):
-    error_message = ""
-    next_url = request.POST.get("next") or request.GET.get("next")
+class SignUpView(FormView):
+    template_name = "registration/signup.html"
+    form_class = UserCreationForm
 
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            if next_url and url_has_allowed_host_and_scheme(
-                next_url, allowed_hosts={request.get_host()}
-            ):
-                return redirect(next_url)
-            return redirect("course-list")
-        else:
-            error_message = "Invalid sign up - please try again."
-    else:
-        form = UserCreationForm()
+    def get_next_url(self):
+        return self.request.POST.get("next") or self.request.GET.get("next")
 
-    context = {
-        "form": form,
-        "error_message": error_message,
-        "next": next_url,
-    }
-    return render(request, "registration/signup.html", context)
+    def get_success_url(self):
+        next_url = self.get_next_url()
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url, allowed_hosts={self.request.get_host()}
+        ):
+            return next_url
+        return reverse_lazy("course-list")
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["next"] = self.get_next_url()
+        context["error_message"] = ""
+        if self.request.method == "POST" and context["form"].errors:
+            context["error_message"] = "Invalid sign up - please try again."
+        return context
 
 
 class CourseListView(LoginRequiredMixin, ListView):
@@ -232,3 +238,16 @@ class StudyResourceDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return StudyResource.objects.filter(user=self.request.user)
+
+
+class AssignmentCompleteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        assignment = get_object_or_404(
+            Assignment,
+            pk=pk,
+            course__user=request.user,
+        )
+        assignment.status = "done"
+        assignment.save()
+        messages.success(request, "Assignment marked as complete.")
+        return redirect("assignment-detail", pk=pk)
