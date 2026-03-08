@@ -102,9 +102,31 @@ class CourseListView(LoginRequiredMixin, ListView):
 class CourseDetailView(LoginRequiredMixin, DetailView):
     model = Course
     template_name = "courses/detail.html"
+    context_object_name = "course"
 
     def get_queryset(self):
         return Course.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        today = date.today()
+        soon = today + timedelta(days=2)
+
+        assignments = self.object.assignments.all().order_by("due_date")
+
+        for assignment in assignments:
+            assignment.is_due_soon = (
+                assignment.status != "done" and today <= assignment.due_date <= soon
+            )
+
+        context["assignments"] = assignments
+        context["total_assignments_count"] = assignments.count()
+        context["completed_assignments_count"] = assignments.filter(
+            status="done"
+        ).count()
+
+        return context
 
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
@@ -241,13 +263,26 @@ class StudyResourceDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class AssignmentCompleteView(LoginRequiredMixin, View):
-    def post(self, request, pk):
-        assignment = get_object_or_404(
+    status = "done"
+    success_message = "Assignment marked as complete."
+
+    def get_object(self, pk):
+        return get_object_or_404(
             Assignment,
             pk=pk,
-            course__user=request.user,
+            course__user=self.request.user,
         )
-        assignment.status = "done"
-        assignment.save()
-        messages.success(request, "Assignment marked as complete.")
+
+    def post(self, request, pk):
+        assignment = self.get_object(pk)
+        assignment.status = self.status
+        assignment.save(update_fields=["status"])
+        messages.success(request, self.success_message)
+        if request.POST.get("redirect_to") == "course":
+            return redirect(assignment.course.get_absolute_url())
         return redirect("assignment-detail", pk=pk)
+
+
+class AssignmentIncompleteView(AssignmentCompleteView):
+    status = "todo"
+    success_message = "Assignment marked as incomplete."

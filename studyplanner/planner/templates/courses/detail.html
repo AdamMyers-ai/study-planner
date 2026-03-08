@@ -1,6 +1,9 @@
 {% extends "base.html" %} {% block content %}
 <h1>{{ course.name }}</h1>
 <p>Instructor: {{ course.instructor|default:"-" }}</p>
+<p>
+  Completed Assignments: {{ completed_assignments_count }} / {{ total_assignments_count }}
+</p>
 
 <p>
   <a href="{% url 'course-update' course.id %}">Edit Course</a>
@@ -15,7 +18,7 @@
 </p>
 
 <ul>
-  {% for assignment in course.assignments.all %}
+  {% for assignment in assignments %}
   <li>
     <a href="{% url 'assignment-detail' assignment.id %}">
       {{ assignment.title }}

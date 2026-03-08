@@ -20,5 +20,16 @@
 <form action="{% url 'assignment-complete' assignment.id %}" method="post">
   {% csrf_token %}
   <button type="submit">Mark Complete</button>
+  <button type="submit" name="redirect_to" value="course">
+    Mark Complete and View Course
+  </button>
+</form>
+{% else %}
+<form action="{% url 'assignment-incomplete' assignment.id %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Mark Incomplete</button>
+  <button type="submit" name="redirect_to" value="course">
+    Mark Incomplete and View Course
+  </button>
 </form>
 {% endif %} {% endblock %}
