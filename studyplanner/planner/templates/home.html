@@ -2,25 +2,79 @@
 {% block title %}Home | Study Planner{% endblock %}
 {% block content %}
 <section class="card">
-  <h1>Welcome to Study Planner</h1>
+  <h1>
+    {% if user.is_authenticated %}Dashboard{% else %}Welcome to Study Planner{% endif %}
+  </h1>
 
   {% if user.is_authenticated %}
-
-  <p>Use Courses to track assignments and Resources to attach study links.</p>
-
   <div class="actions">
     <a href="{% url 'course-list' %}" class="btn">View Courses</a>
     <a href="{% url 'resource-list' %}" class="btn btn-ghost">View Resources</a>
   </div>
 
-  {% else %}
+  <h2>Due Today</h2>
+  <ul>
+    {% for assignment in due_today_assignments %}
+    <li>
+      <a href="{% url 'assignment-detail' assignment.id %}"
+        >{{ assignment.title }}</a
+      >
+      - {{ assignment.course.name }}
+    </li>
+    {% empty %}
+    <li>No assignments due today.</li>
+    {% endfor %}
+  </ul>
 
-  <p>Please log in to manage your courses and assignments.</p>
+  <h2>Due This Week</h2>
+  <ul>
+    {% for assignment in due_this_week_assignments %}
+    <li>
+      <a href="{% url 'assignment-detail' assignment.id %}"
+        >{{ assignment.title }}</a
+      >
+      - due {{ assignment.due_date }}
+    </li>
+    {% empty %}
+    <li>No assignments due this week.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Overdue</h2>
+  <ul>
+    {% for assignment in overdue_assignments %}
+    <li>
+      <a href="{% url 'assignment-detail' assignment.id %}"
+        >{{ assignment.title }}</a
+      >
+      - due {{ assignment.due_date }}
+    </li>
+    {% empty %}
+    <li>No overdue assignments.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>High Priority</h2>
+  <ul>
+    {% for assignment in high_priority_assignments %}
+    <li>
+      <a href="{% url 'assignment-detail' assignment.id %}"
+        >{{ assignment.title }}</a
+      >
+      - {{ assignment.course.name }}
+    </li>
+    {% empty %}
+    <li>No high priority assignments.</li>
+    {% endfor %}
+  </ul>
+
+  {% else %}
+  <p>Please sign up or log in to manage your courses and assignments.</p>
 
   <div class="actions">
     <a href="{% url 'login' %}" class="btn">Login</a>
+    <a href="{% url 'signup' %}" class="btn">Sign Up</a>
   </div>
-
   {% endif %}
 </section>
 {% endblock %}

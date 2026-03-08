@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -25,27 +26,50 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        assignments = Assignment.objects.filter(course__user=self.request.user)
+        today = date.today()
+        week_from_today = today + timedelta(days=7)
 
-        context["overdue"] = assignments.filter(due_date__lt=date.today()).exclude(
+        if not self.request.user.is_authenticated:
+            context["overdue_assignments"] = Assignment.objects.none()
+            context["due_today_assignments"] = Assignment.objects.none()
+            context["due_this_week_assignments"] = Assignment.objects.none()
+            context["high_priority_assignments"] = Assignment.objects.none()
+            return context
+
+        assignments = Assignment.objects.filter(
+            course__user=self.request.user
+        ).order_by("due_date")
+
+        context["today"] = today
+        context["overdue_assignments"] = assignments.filter(due_date__lt=today).exclude(
             status="done"
         )
-        context["due_this_week"] = assignments.filter(
-            due_date__lte=date.today() + timedelta(days=7)
+        context["due_today_assignments"] = assignments.filter(due_date=today).exclude(
+            status="done"
         )
-        context["high_priority"] = assignments.filter(priority="high")
+        context["due_this_week_assignments"] = assignments.filter(
+            due_date__gt=today, due_date__lte=week_from_today
+        ).exclude(status="done")
+        context["high_priority_assignments"] = assignments.filter(
+            priority="high"
+        ).exclude(status="done")
 
         return context
 
 
 def signup(request):
     error_message = ""
+    next_url = request.POST.get("next") or request.GET.get("next")
 
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url, allowed_hosts={request.get_host()}
+            ):
+                return redirect(next_url)
             return redirect("course-list")
         else:
             error_message = "Invalid sign up - please try again."
@@ -55,6 +79,7 @@ def signup(request):
     context = {
         "form": form,
         "error_message": error_message,
+        "next": next_url,
     }
     return render(request, "registration/signup.html", context)
 
