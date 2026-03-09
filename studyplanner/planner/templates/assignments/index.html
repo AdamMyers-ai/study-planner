@@ -7,6 +7,17 @@
 
 <form method="get" class="surface filters">
   <div class="field">
+    <label for="search-filter">Search</label>
+    <input
+      id="search-filter"
+      type="search"
+      name="q"
+      value="{{ search_query }}"
+      placeholder="Search by title"
+    />
+  </div>
+
+  <div class="field">
     <label for="status-filter">Status</label>
     <select id="status-filter" name="status">
       <option value="">All</option>

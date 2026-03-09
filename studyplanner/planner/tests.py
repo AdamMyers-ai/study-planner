@@ -283,3 +283,47 @@ class AssignmentCompleteViewTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+
+class AssignmentListViewTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="listuser", password="StrongPass123!"
+        )
+        other_user = get_user_model().objects.create_user(
+            username="outsider", password="StrongPass123!"
+        )
+        self.course = Course.objects.create(user=self.user, name="Biology 101")
+        other_course = Course.objects.create(user=other_user, name="Physics 101")
+        Assignment.objects.create(
+            course=self.course,
+            title="Cell structure review",
+            due_date=date.today(),
+            status="todo",
+            priority="high",
+        )
+        Assignment.objects.create(
+            course=self.course,
+            title="Lab notebook update",
+            due_date=date.today(),
+            status="done",
+            priority="low",
+        )
+        Assignment.objects.create(
+            course=other_course,
+            title="Cell transport essay",
+            due_date=date.today(),
+            status="todo",
+            priority="medium",
+        )
+
+    def test_assignment_list_filters_by_search_query(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("assignment-list"), {"q": "cell"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Cell structure review")
+        self.assertNotContains(response, "Lab notebook update")
+        self.assertNotContains(response, "Cell transport essay")
+        self.assertContains(response, 'value="cell"')

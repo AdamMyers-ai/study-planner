@@ -4,6 +4,17 @@
 <section class="card">
   <h1>{% if object %}Edit Assignment{% else %}New Assignment{% endif %}</h1>
 
+  {% if object %}
+  <div class="actions">
+    <a href="{% url 'course-detail' object.course.id %}" class="btn btn-ghost">
+      Back to Course
+    </a>
+    <a href="{% url 'assignment-detail' object.id %}" class="btn btn-ghost">
+      Back to Assignment
+    </a>
+  </div>
+  {% endif %}
+
   <form method="post" class="form">
     {% csrf_token %}
 
@@ -34,7 +45,11 @@
 
     <div class="actions">
       <button class="btn" type="submit">Save</button>
+      {% if object %}
+      <a href="{% url 'course-detail' object.course.id %}" class="btn btn-ghost">Cancel</a>
+      {% else %}
       <a href="javascript:history.back()" class="btn btn-ghost">Cancel</a>
+      {% endif %}
     </div>
   </form>
 </section>
