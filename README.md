@@ -16,9 +16,24 @@ The app gives each user a personal workspace with:
 
 ## Getting Started
 
-- Deployed app: add your live app URL here
+- Deployed app: [Study Planner](https://study-planner-app-289f997b9ef5.herokuapp.com/)
 - Planning materials: [Project planning](https://trello.com/b/Y4OCluBP)
 - GitHub repository: [AdamMyers-ai/study-planner](https://github.com/AdamMyers-ai/study-planner)
+
+## Project Structure
+
+```text
+.
+├── assets/
+├── manage.py
+├── planner/
+├── studyplanner/
+├── Procfile
+├── Pipfile
+└── README.md
+```
+
+Active application code lives in `planner/` and `studyplanner/`. The `studyplannerbackup/` directory is an older backup copy and is not part of the main app workflow.
 
 ### Local Setup
 
@@ -50,12 +65,11 @@ Local development currently expects a PostgreSQL database named `studyplanner`.
 createdb studyplanner
 ```
 
-If your local PostgreSQL setup uses different credentials or connection settings, update [settings.py](/home/adammyers/code/ga/projects/study-planner/studyplanner/studyplanner/settings.py).
+If your local PostgreSQL setup uses different credentials or connection settings, update [settings.py](/home/adammyers/code/ga/projects/study-planner/studyplanner/settings.py).
 
 #### Run migrations
 
 ```bash
-cd studyplanner
 pipenv run python manage.py migrate
 ```
 
@@ -80,9 +94,10 @@ Demo credentials:
 
 #### Run tests
 
+Because the repo includes `studyplannerbackup/` as a backup copy, scope test discovery to the active app:
+
 ```bash
-cd studyplanner
-pipenv run python manage.py test --settings=studyplanner.test_settings
+pipenv run python manage.py test planner --settings=studyplanner.test_settings
 ```
 
 ## Screenshots
