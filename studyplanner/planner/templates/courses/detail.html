@@ -1,10 +1,10 @@
 {% extends "base.html" %} {% block content %}
-<section class="card course-panel course-theme-{{ course.color|default:'slate' }}">
+<section class="card course-panel course-theme-{{ course.department|default:'general' }}">
 <div class="course-heading">
   <h1>
     {% if course.course_code %}{{ course.course_code }} - {% endif %}{{ course.name }}
   </h1>
-  <span class="course-badge">{{ course.get_color_display }}</span>
+  <span class="course-badge">{{ course.get_department_display }}</span>
 </div>
 <div class="detail-grid">
   <div class="detail-row">
@@ -116,7 +116,7 @@
 
 <ul class="assignment-list">
   {% for assignment in assignments %}
-  <li class="course-theme-{{ course.color|default:'slate' }}">
+  <li class="course-theme-{{ course.department|default:'general' }}">
     <a href="{% url 'assignment-detail' assignment.id %}">
       {{ assignment.title }}
     </a>

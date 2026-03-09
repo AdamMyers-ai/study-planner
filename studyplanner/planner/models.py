@@ -14,13 +14,27 @@ PRIORITY_CHOICES = [
     ("high", "High"),
 ]
 
-COURSE_COLOR_CHOICES = [
-    ("slate", "Slate"),
-    ("blue", "Blue"),
-    ("green", "Green"),
-    ("amber", "Amber"),
-    ("rose", "Rose"),
-    ("teal", "Teal"),
+COURSE_DEPARTMENT_CHOICES = [
+    ("general", "General"),
+    ("computer_science", "Computer Science"),
+    ("mathematics", "Mathematics"),
+    ("engineering", "Engineering"),
+    ("business", "Business"),
+    ("economics", "Economics"),
+    ("history", "History"),
+    ("science", "Science"),
+    ("humanities", "Humanities"),
+    ("psychology", "Psychology"),
+    ("political_science", "Political Science"),
+    ("english", "English"),
+    ("languages", "Languages"),
+    ("arts_design", "Arts and Design"),
+    ("music", "Music"),
+    ("communications", "Communications"),
+    ("education", "Education"),
+    ("health_sciences", "Health Sciences"),
+    ("philosophy", "Philosophy"),
+    ("law", "Law"),
 ]
 
 
@@ -42,8 +56,11 @@ class Course(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     notes = models.TextField(blank=True)
-    color = models.CharField(
-        max_length=20, choices=COURSE_COLOR_CHOICES, blank=True, default="slate"
+    department = models.CharField(
+        max_length=32,
+        choices=COURSE_DEPARTMENT_CHOICES,
+        blank=True,
+        default="general",
     )
 
     def __str__(self):

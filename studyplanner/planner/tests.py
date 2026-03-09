@@ -110,7 +110,7 @@ class CourseDetailViewTests(TestCase):
             start_date=date(2026, 1, 12),
             end_date=date(2026, 5, 1),
             notes="Bring calculator.",
-            color="blue",
+            department="science",
         )
         Assignment.objects.create(
             course=self.course,
@@ -168,7 +168,7 @@ class CourseCreateViewTests(TestCase):
                 "start_date": "2026-08-24",
                 "end_date": "2026-12-10",
                 "notes": "Review matrix multiplication weekly.",
-                "color": "teal",
+                "department": "mathematics",
             },
         )
 
@@ -178,7 +178,7 @@ class CourseCreateViewTests(TestCase):
         self.assertEqual(course.course_code, "MATH-220")
         self.assertEqual(course.term, "Fall 2026")
         self.assertEqual(course.meeting_days, "Tue/Thu")
-        self.assertEqual(course.color, "teal")
+        self.assertEqual(course.department, "mathematics")
         self.assertTrue(bool(course.syllabus_file))
 
 

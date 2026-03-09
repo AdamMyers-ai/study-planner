@@ -2,7 +2,7 @@
 {% block content %}
 <div class="page-header">
   <h1>All Assignments</h1>
-  <p class="page-subtitle">Filter by status or priority and keep course colors visible in the queue.</p>
+  <p class="page-subtitle">Filter by status or priority and keep each course department visible in the queue.</p>
 </div>
 
 <form method="get" class="surface filters">
@@ -52,7 +52,7 @@
 
 <ul class="assignment-list">
   {% for assignment in assignments %}
-  <li class="course-theme-{{ assignment.course.color|default:'slate' }}">
+  <li class="course-theme-{{ assignment.course.department|default:'general' }}">
     <a href="{% url 'assignment-detail' assignment.id %}">{{ assignment.title }}</a>
     <span class="course-chip">{{ assignment.course.name }}</span>
     <span class="assignment-meta">due {{ assignment.due_date }}</span>

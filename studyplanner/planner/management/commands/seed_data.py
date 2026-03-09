@@ -16,13 +16,13 @@ class Command(BaseCommand):
         course1, _ = Course.objects.get_or_create(
             user=user,
             name="Computer Science 101",
-            defaults={"instructor": "Dr. Smith", "color": "blue"},
+            defaults={"instructor": "Dr. Smith", "department": "computer_science"},
         )
 
         course2, _ = Course.objects.get_or_create(
             user=user,
             name="History 201",
-            defaults={"instructor": "Prof. Johnson", "color": "green"},
+            defaults={"instructor": "Prof. Johnson", "department": "history"},
         )
 
         resource1, _ = StudyResource.objects.get_or_create(

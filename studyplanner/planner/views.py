@@ -131,7 +131,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
-    fields = ["name", "instructor", "color"]
+    form_class = CourseForm
     template_name = "courses/form.html"
 
     def form_valid(self, form):
@@ -142,7 +142,7 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 
 class CourseUpdateView(LoginRequiredMixin, UpdateView):
     model = Course
-    fields = ["name", "instructor", "color"]
+    form_class = CourseForm
     template_name = "courses/form.html"
 
     def get_queryset(self):

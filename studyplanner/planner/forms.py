@@ -32,7 +32,7 @@ class CourseForm(forms.ModelForm):
             "start_date",
             "end_date",
             "notes",
-            "color",
+            "department",
         ]
         widgets = {
             "start_date": forms.DateInput(attrs={"type": "date"}),

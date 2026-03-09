@@ -1,9 +1,15 @@
 {% extends "base.html" %} {% block content %}
-<section class="card course-panel course-theme-{{ assignment.course.color|default:'slate' }}">
+<section class="card course-panel course-theme-{{ assignment.course.department|default:'general' }}">
 <div class="course-heading">
   <h1>{{ assignment.title }}</h1>
   <a href="{% url 'course-detail' assignment.course.id %}" class="course-chip">
     {{ assignment.course.name }}
+  </a>
+</div>
+
+<div class="actions">
+  <a href="{% url 'course-detail' assignment.course.id %}" class="btn btn-ghost">
+    Back to Course
   </a>
 </div>
 

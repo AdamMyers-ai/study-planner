@@ -25,7 +25,7 @@
       <h2>Due Today</h2>
       <ul class="assignment-list">
         {% for assignment in due_today_assignments %}
-        <li class="course-theme-{{ assignment.course.color|default:'slate' }}">
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
           <a href="{% url 'assignment-detail' assignment.id %}">
             {{ assignment.title }}
           </a>
@@ -41,7 +41,7 @@
       <h2>Due This Week</h2>
       <ul class="assignment-list">
         {% for assignment in due_this_week_assignments %}
-        <li class="course-theme-{{ assignment.course.color|default:'slate' }}">
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
           <a href="{% url 'assignment-detail' assignment.id %}">
             {{ assignment.title }}
           </a>
@@ -58,7 +58,7 @@
       <h2>Overdue</h2>
       <ul class="assignment-list">
         {% for assignment in overdue_assignments %}
-        <li class="course-theme-{{ assignment.course.color|default:'slate' }}">
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
           <a href="{% url 'assignment-detail' assignment.id %}">
             {{ assignment.title }}
           </a>
@@ -75,7 +75,7 @@
       <h2>High Priority</h2>
       <ul class="assignment-list">
         {% for assignment in high_priority_assignments %}
-        <li class="course-theme-{{ assignment.course.color|default:'slate' }}">
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
           <a href="{% url 'assignment-detail' assignment.id %}">
             {{ assignment.title }}
           </a>

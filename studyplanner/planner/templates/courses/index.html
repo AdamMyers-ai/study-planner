@@ -1,13 +1,13 @@
 {% extends "base.html" %} {% block content %}
 <div class="page-header">
   <h1>My Courses</h1>
-  <p class="page-subtitle">Each course carries its own accent color across the planner.</p>
+  <p class="page-subtitle">Each course carries its own department theme across the planner.</p>
   <a href="{% url 'course-create' %}" class="btn">Add Course</a>
 </div>
 
 <ul class="course-list">
   {% for course in courses %}
-  <li class="course-theme-{{ course.color|default:'slate' }}">
+  <li class="course-theme-{{ course.department|default:'general' }}">
     <a href="{% url 'course-detail' course.id %}">
       {% if course.course_code %}{{ course.course_code }} - {% endif %}{{ course.name }}
     </a>

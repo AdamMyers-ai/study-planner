@@ -12,12 +12,26 @@
   --link-hover: #ffe2a3;
   --button: #f2c46d;
   --button-text: #17202a;
-  --course-slate: #64748b;
-  --course-blue: #2563eb;
-  --course-green: #16a34a;
-  --course-amber: #d97706;
-  --course-rose: #e11d48;
-  --course-teal: #0f766e;
+  --course-general: #64748b;
+  --course-computer-science: #2563eb;
+  --course-mathematics: #0f766e;
+  --course-engineering: #4f46e5;
+  --course-business: #15803d;
+  --course-economics: #65a30d;
+  --course-history: #d97706;
+  --course-science: #16a34a;
+  --course-humanities: #e11d48;
+  --course-psychology: #9333ea;
+  --course-political-science: #b91c1c;
+  --course-english: #c2410c;
+  --course-languages: #0891b2;
+  --course-arts-design: #db2777;
+  --course-music: #7c3aed;
+  --course-communications: #0284c7;
+  --course-education: #ca8a04;
+  --course-health-sciences: #0f766e;
+  --course-philosophy: #78716c;
+  --course-law: #1d4ed8;
 }
 
 body {
@@ -139,7 +153,7 @@ h3 {
 }
 
 .course-panel {
-  border-left: 8px solid var(--course-color, var(--course-slate));
+  border-left: 8px solid var(--course-color, var(--course-general));
 }
 
 .course-list,
@@ -156,14 +170,14 @@ h3 {
 .resource-list li {
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--panel-border);
-  border-left: 6px solid var(--course-color, var(--course-slate));
+  border-left: 6px solid var(--course-color, var(--course-general));
   border-radius: 10px;
   margin-bottom: 12px;
   padding: 14px 16px;
 }
 
 .resource-list li {
-  --course-color: var(--course-amber);
+  --course-color: var(--course-history);
 }
 
 .course-heading {
@@ -181,7 +195,7 @@ h3 {
   gap: 8px;
   padding: 5px 10px;
   border-radius: 999px;
-  border: 1px solid var(--course-color, var(--course-slate));
+  border: 1px solid var(--course-color, var(--course-general));
   color: var(--text);
 }
 
@@ -191,7 +205,7 @@ h3 {
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background-color: var(--course-color, var(--course-slate));
+  background-color: var(--course-color, var(--course-general));
 }
 
 .detail-grid {
@@ -262,7 +276,7 @@ h3 {
 }
 
 .btn-course {
-  background-color: var(--course-color, var(--course-slate));
+  background-color: var(--course-color, var(--course-general));
   color: white;
 }
 
@@ -311,28 +325,84 @@ form p {
   color: var(--muted);
 }
 
-.course-theme-slate {
-  --course-color: var(--course-slate);
+.course-theme-general {
+  --course-color: var(--course-general);
 }
 
-.course-theme-blue {
-  --course-color: var(--course-blue);
+.course-theme-computer_science {
+  --course-color: var(--course-computer-science);
 }
 
-.course-theme-green {
-  --course-color: var(--course-green);
+.course-theme-mathematics {
+  --course-color: var(--course-mathematics);
 }
 
-.course-theme-amber {
-  --course-color: var(--course-amber);
+.course-theme-engineering {
+  --course-color: var(--course-engineering);
 }
 
-.course-theme-rose {
-  --course-color: var(--course-rose);
+.course-theme-business {
+  --course-color: var(--course-business);
 }
 
-.course-theme-teal {
-  --course-color: var(--course-teal);
+.course-theme-economics {
+  --course-color: var(--course-economics);
+}
+
+.course-theme-history {
+  --course-color: var(--course-history);
+}
+
+.course-theme-science {
+  --course-color: var(--course-science);
+}
+
+.course-theme-humanities {
+  --course-color: var(--course-humanities);
+}
+
+.course-theme-psychology {
+  --course-color: var(--course-psychology);
+}
+
+.course-theme-political_science {
+  --course-color: var(--course-political-science);
+}
+
+.course-theme-english {
+  --course-color: var(--course-english);
+}
+
+.course-theme-languages {
+  --course-color: var(--course-languages);
+}
+
+.course-theme-arts_design {
+  --course-color: var(--course-arts-design);
+}
+
+.course-theme-music {
+  --course-color: var(--course-music);
+}
+
+.course-theme-communications {
+  --course-color: var(--course-communications);
+}
+
+.course-theme-education {
+  --course-color: var(--course-education);
+}
+
+.course-theme-health_sciences {
+  --course-color: var(--course-health-sciences);
+}
+
+.course-theme-philosophy {
+  --course-color: var(--course-philosophy);
+}
+
+.course-theme-law {
+  --course-color: var(--course-law);
 }
 
 @media (max-width: 640px) {
