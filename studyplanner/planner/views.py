@@ -131,7 +131,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
-    form_class = CourseForm
+    fields = ["name", "instructor", "color"]
     template_name = "courses/form.html"
 
     def form_valid(self, form):
@@ -142,7 +142,7 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 
 class CourseUpdateView(LoginRequiredMixin, UpdateView):
     model = Course
-    form_class = CourseForm
+    fields = ["name", "instructor", "color"]
     template_name = "courses/form.html"
 
     def get_queryset(self):
@@ -192,6 +192,7 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.course = self.course
+        messages.success(self.request, "Assignment created successfully.")
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -211,6 +212,10 @@ class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
         kwargs["user"] = self.request.user
         return kwargs
 
+    def form_valid(self, form):
+        messages.success(self.request, "Assignment updated successfully.")
+        return super().form_valid(form)
+
     def get_success_url(self):
         return self.object.course.get_absolute_url()
 
@@ -223,6 +228,7 @@ class AssignmentDeleteView(LoginRequiredMixin, DeleteView):
         return Assignment.objects.filter(course__user=self.request.user)
 
     def get_success_url(self):
+        messages.success(self.request, "Assignment deleted successfully.")
         return self.object.course.get_absolute_url()
 
 
@@ -250,6 +256,7 @@ class StudyResourceCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(self.request, "Resource created successfully.")
         return super().form_valid(form)
 
 
@@ -261,6 +268,10 @@ class StudyResourceUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return StudyResource.objects.filter(user=self.request.user)
 
+    def form_valid(self, form):
+        messages.success(self.request, "Resource updated successfully.")
+        return super().form_valid(form)
+
 
 class StudyResourceDeleteView(LoginRequiredMixin, DeleteView):
     model = StudyResource
@@ -269,6 +280,10 @@ class StudyResourceDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return StudyResource.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Resource deleted successfully.")
+        return super().form_valid(form)
 
 
 class AssignmentListView(LoginRequiredMixin, ListView):
