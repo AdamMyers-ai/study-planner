@@ -136,6 +136,7 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(self.request, "Course created successfully.")
         return super().form_valid(form)
 
 
@@ -147,6 +148,10 @@ class CourseUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return Course.objects.filter(user=self.request.user)
 
+    def form_valid(self, form):
+        messages.success(self.request, "Course updated successfully.")
+        return super().form_valid(form)
+
 
 class CourseDeleteView(LoginRequiredMixin, DeleteView):
     model = Course
@@ -155,6 +160,10 @@ class CourseDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return Course.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Course deleted successfully.")
+        return super().form_valid(form)
 
 
 class AssignmentDetailView(LoginRequiredMixin, DetailView):
