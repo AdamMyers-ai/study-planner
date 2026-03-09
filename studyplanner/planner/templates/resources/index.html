@@ -11,7 +11,7 @@
   <li>
     <a href="{% url 'resource-detail' resource.id %}">{{ resource.title }}</a>
     {% if resource.resource_type %}
-    <span class="resource-meta">({{ resource.resource_type }})</span>
+    <span class="resource-meta">({{ resource.get_resource_type_display }})</span>
     {% endif %}
   </li>
   {% empty %}

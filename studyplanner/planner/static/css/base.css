@@ -280,6 +280,38 @@ h3 {
   color: white;
 }
 
+.form {
+  display: grid;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.form-row {
+  display: grid;
+  gap: 8px;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  width: min(100%, 520px);
+}
+
+.form-row select[multiple] {
+  min-height: 140px;
+}
+
+.form-errors,
+.errorlist {
+  margin: 0;
+  padding: 10px 12px;
+  list-style: none;
+  border-radius: 10px;
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  background-color: rgba(225, 29, 72, 0.12);
+  color: #fecdd3;
+}
+
 input,
 select,
 textarea,

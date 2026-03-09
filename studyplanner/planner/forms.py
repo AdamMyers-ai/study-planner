@@ -6,6 +6,12 @@ class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         fields = ["title", "due_date", "status", "priority", "notes", "resources"]
+        widgets = {
+            "title": forms.TextInput(attrs={"placeholder": "Assignment title"}),
+            "due_date": forms.DateInput(attrs={"type": "date"}),
+            "notes": forms.Textarea(attrs={"rows": 5}),
+            "resources": forms.SelectMultiple(attrs={"size": 5}),
+        }
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)

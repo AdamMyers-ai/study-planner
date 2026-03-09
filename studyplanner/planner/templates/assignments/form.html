@@ -40,6 +40,13 @@
     {% if form.resources %}
     <div class="form-row">
       {{ form.resources.label_tag }} {{ form.resources }} {{ form.resources.errors }}
+      {% if object %}
+      <div class="actions">
+        <a href="{% url 'assignment-resource-create' object.id %}" class="btn btn-ghost">
+          Add New Resource
+        </a>
+      </div>
+      {% endif %}
     </div>
     {% endif %}
 

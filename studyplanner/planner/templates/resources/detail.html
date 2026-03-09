@@ -3,7 +3,7 @@
 {% if object.url %}
 <p><a href="{{ object.url }}" target="_blank" rel="noopener">{{ object.url }}</a></p>
 {% endif %}
-<p>Type: {{ object.resource_type|default:"-" }}</p>
+<p>Type: {{ object.get_resource_type_display|default:"-" }}</p>
 <p>Description: {{ object.description|default:"-" }}</p>
 
 <p>

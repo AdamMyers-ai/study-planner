@@ -42,6 +42,11 @@
 {% endif %}
 
 <h2>Study Resources</h2>
+<div class="actions">
+  <a href="{% url 'assignment-resource-create' assignment.id %}" class="btn btn-course">
+    Add Resource to Assignment
+  </a>
+</div>
 <ul class="resource-list">
   {% for resource in assignment.resources.all %}
   <li>
@@ -53,7 +58,7 @@
     {{ resource.title }}
     {% endif %}
     {% if resource.resource_type %}
-    <span class="resource-meta">- {{ resource.resource_type }}</span>
+    <span class="resource-meta">- {{ resource.get_resource_type_display }}</span>
     {% endif %}
   </li>
   {% empty %}

@@ -268,10 +268,34 @@ class StudyResourceCreateView(LoginRequiredMixin, CreateView):
     fields = ["title", "url", "resource_type", "description"]
     template_name = "resources/form.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        self.assignment = None
+        assignment_id = kwargs.get("assignment_id")
+        if assignment_id is not None:
+            self.assignment = get_object_or_404(
+                Assignment,
+                id=assignment_id,
+                course__user=request.user,
+            )
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         form.instance.user = self.request.user
+        response = super().form_valid(form)
+        if self.assignment is not None:
+            self.assignment.resources.add(self.object)
         messages.success(self.request, "Resource created successfully.")
-        return super().form_valid(form)
+        return response
+
+    def get_success_url(self):
+        if self.assignment is not None:
+            return reverse_lazy("assignment-detail", kwargs={"pk": self.assignment.pk})
+        return super().get_success_url()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["assignment"] = self.assignment
+        return context
 
 
 class StudyResourceUpdateView(LoginRequiredMixin, UpdateView):

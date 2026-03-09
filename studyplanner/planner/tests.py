@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Assignment, Course
+from .models import Assignment, Course, StudyResource
 
 
 class AuthFlowTests(TestCase):
@@ -327,3 +327,58 @@ class AssignmentListViewTests(TestCase):
         self.assertNotContains(response, "Lab notebook update")
         self.assertNotContains(response, "Cell transport essay")
         self.assertContains(response, 'value="cell"')
+
+
+class StudyResourceViewTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="resourceuser", password="StrongPass123!"
+        )
+        self.course = Course.objects.create(user=self.user, name="Chemistry 101")
+        self.assignment = Assignment.objects.create(
+            course=self.course,
+            title="Reaction worksheet",
+            due_date=date.today(),
+        )
+
+    def test_create_resource_saves_choice_and_detail_shows_display_label(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("resource-create"),
+            {
+                "title": "Exam Practice Set",
+                "url": "https://example.com/practice",
+                "resource_type": "practice_problems",
+                "description": "Timed practice questions.",
+            },
+        )
+
+        resource = StudyResource.objects.get(title="Exam Practice Set")
+        self.assertRedirects(response, resource.get_absolute_url())
+        self.assertEqual(resource.resource_type, "practice_problems")
+
+        detail_response = self.client.get(resource.get_absolute_url())
+
+        self.assertContains(detail_response, "Practice Problems")
+
+    def test_create_resource_for_assignment_attaches_and_redirects_to_assignment(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("assignment-resource-create", args=[self.assignment.pk]),
+            {
+                "title": "Stoichiometry Video",
+                "url": "https://example.com/stoichiometry",
+                "resource_type": "video",
+                "description": "Walkthrough of the worksheet topics.",
+            },
+        )
+
+        resource = StudyResource.objects.get(title="Stoichiometry Video")
+        self.assignment.refresh_from_db()
+
+        self.assertRedirects(
+            response, reverse("assignment-detail", args=[self.assignment.pk])
+        )
+        self.assertIn(resource, self.assignment.resources.all())

@@ -52,6 +52,11 @@ urlpatterns = [
         views.AssignmentIncompleteView.as_view(),
         name="assignment-incomplete",
     ),
+    path(
+        "assignments/<int:assignment_id>/resources/new/",
+        views.StudyResourceCreateView.as_view(),
+        name="assignment-resource-create",
+    ),
     # Resources routes
     path("resources/", views.StudyResourceListView.as_view(), name="resource-list"),
     path(

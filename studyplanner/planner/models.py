@@ -14,6 +14,15 @@ PRIORITY_CHOICES = [
     ("high", "High"),
 ]
 
+RESOURCE_TYPE_CHOICES = [
+    ("video", "Video"),
+    ("article", "Article"),
+    ("slides", "Slides"),
+    ("textbook", "Textbook"),
+    ("practice_problems", "Practice Problems"),
+    ("other", "Other"),
+]
+
 COURSE_DEPARTMENT_CHOICES = [
     ("general", "General"),
     ("computer_science", "Computer Science"),
@@ -96,8 +105,8 @@ class StudyResource(models.Model):
     title = models.CharField(max_length=200)
     url = models.URLField(blank=True)  # optional
     resource_type = models.CharField(
-        max_length=50, blank=True
-    )  # video/article/slides/textbook
+        max_length=50, blank=True, choices=RESOURCE_TYPE_CHOICES
+    )
     description = models.TextField(blank=True)
 
     def __str__(self):
