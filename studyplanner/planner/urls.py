@@ -28,6 +28,11 @@ urlpatterns = [
         name="assignment-detail",
     ),
     path(
+        "assignments/",
+        views.AssignmentListView.as_view(),
+        name="assignment-list",
+    ),
+    path(
         "assignments/<int:pk>/edit/",
         views.AssignmentUpdateView.as_view(),
         name="assignment-update",

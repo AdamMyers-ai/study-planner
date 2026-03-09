@@ -17,7 +17,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from datetime import date, timedelta
 from .models import Course, Assignment, StudyResource
-from .forms import AssignmentForm
+from .forms import AssignmentForm, CourseForm
 
 
 # Create your views here.
@@ -131,7 +131,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
-    fields = ["name", "instructor", "color"]
+    form_class = CourseForm
     template_name = "courses/form.html"
 
     def form_valid(self, form):
@@ -141,7 +141,7 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 
 class CourseUpdateView(LoginRequiredMixin, UpdateView):
     model = Course
-    fields = ["name", "instructor", "color"]
+    form_class = CourseForm
     template_name = "courses/form.html"
 
     def get_queryset(self):
@@ -260,6 +260,43 @@ class StudyResourceDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return StudyResource.objects.filter(user=self.request.user)
+
+
+class AssignmentListView(LoginRequiredMixin, ListView):
+    model = Assignment
+    template_name = "assignments/index.html"
+    context_object_name = "assignments"
+
+    def get_queryset(self):
+        queryset = Assignment.objects.filter(course__user=self.request.user).order_by(
+            "due_date"
+        )
+
+        status = self.request.GET.get("status")
+        priority = self.request.GET.get("priority")
+
+        if status:
+            queryset = queryset.filter(status=status)
+
+        if priority:
+            queryset = queryset.filter(priority=priority)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["selected_status"] = self.request.GET.get("status", "")
+        context["selected_priority"] = self.request.GET.get("priority", "")
+
+        today = date.today()
+        soon = today + timedelta(days=2)
+
+        for assignment in context["assignments"]:
+            assignment.is_due_soon = (
+                assignment.status != "done" and today <= assignment.due_date <= soon
+            )
+
+        return context
 
 
 class AssignmentCompleteView(LoginRequiredMixin, View):

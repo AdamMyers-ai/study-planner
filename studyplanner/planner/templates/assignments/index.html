@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <h1>All Assignments</h1>
+  <p class="page-subtitle">Filter by status or priority and keep course colors visible in the queue.</p>
+</div>
+
+<form method="get" class="surface filters">
+  <div class="field">
+    <label for="status-filter">Status</label>
+    <select id="status-filter" name="status">
+      <option value="">All</option>
+      <option value="todo" {% if selected_status == "todo" %}selected{% endif %}>
+        To Do
+      </option>
+      <option
+        value="in_progress"
+        {% if selected_status == "in_progress" %}selected{% endif %}
+      >
+        In Progress
+      </option>
+      <option value="done" {% if selected_status == "done" %}selected{% endif %}>
+        Done
+      </option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="priority-filter">Priority</label>
+    <select id="priority-filter" name="priority">
+      <option value="">All</option>
+      <option value="low" {% if selected_priority == "low" %}selected{% endif %}>
+        Low
+      </option>
+      <option
+        value="medium"
+        {% if selected_priority == "medium" %}selected{% endif %}
+      >
+        Medium
+      </option>
+      <option value="high" {% if selected_priority == "high" %}selected{% endif %}>
+        High
+      </option>
+    </select>
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="btn">Filter</button>
+    <a href="{% url 'assignment-list' %}" class="btn btn-ghost">Clear</a>
+  </div>
+</form>
+
+<ul class="assignment-list">
+  {% for assignment in assignments %}
+  <li class="course-theme-{{ assignment.course.color|default:'slate' }}">
+    <a href="{% url 'assignment-detail' assignment.id %}">{{ assignment.title }}</a>
+    <span class="course-chip">{{ assignment.course.name }}</span>
+    <span class="assignment-meta">due {{ assignment.due_date }}</span>
+    <span class="assignment-meta">{{ assignment.get_status_display }}</span>
+    <span class="assignment-meta">{{ assignment.get_priority_display }}</span>
+    {% if assignment.is_due_soon %}
+    <span class="assignment-meta">Due Soon</span>
+    {% endif %}
+  </li>
+  {% empty %}
+  <li>No assignments found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

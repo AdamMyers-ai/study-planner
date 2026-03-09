@@ -1,35 +1,52 @@
 {% extends "base.html" %} {% block content %}
-<h1>{{ assignment.title }}</h1>
-<p>
-  Course:
-  <a href="{% url 'course-detail' assignment.course.id %}"
-    >{{ assignment.course.name }}</a
-  >
-</p>
-<p>Due: {{ assignment.due_date }}</p>
-<p>Status: {{ assignment.get_status_display }}</p>
-<p>Priority: {{ assignment.get_priority_display }}</p>
-<p>Notes: {{ assignment.notes|default:"-" }}</p>
+<section class="card course-panel course-theme-{{ assignment.course.color|default:'slate' }}">
+<div class="course-heading">
+  <h1>{{ assignment.title }}</h1>
+  <a href="{% url 'course-detail' assignment.course.id %}" class="course-chip">
+    {{ assignment.course.name }}
+  </a>
+</div>
 
-<p>
-  <a href="{% url 'assignment-update' assignment.id %}">Edit</a>
-  <a href="{% url 'assignment-delete' assignment.id %}">Delete</a>
-</p>
+<div class="detail-grid">
+  <div class="detail-row">
+    <span class="detail-label">Due</span>
+    <span class="detail-value">{{ assignment.due_date }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Status</span>
+    <span class="detail-value">{{ assignment.get_status_display }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Priority</span>
+    <span class="detail-value">{{ assignment.get_priority_display }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Notes</span>
+    <span class="detail-value">{{ assignment.notes|default:"-" }}</span>
+  </div>
+</div>
+
+<div class="assignment-actions">
+  <a href="{% url 'assignment-update' assignment.id %}" class="btn btn-course">Edit</a>
+  <a href="{% url 'assignment-delete' assignment.id %}" class="btn btn-ghost">Delete</a>
+</div>
 
 {% if assignment.status != "done" %}
-<form action="{% url 'assignment-complete' assignment.id %}" method="post">
+<form action="{% url 'assignment-complete' assignment.id %}" method="post" class="assignment-actions">
   {% csrf_token %}
-  <button type="submit">Mark Complete</button>
-  <button type="submit" name="redirect_to" value="course">
+  <button type="submit" class="btn btn-course">Mark Complete</button>
+  <button type="submit" name="redirect_to" value="course" class="btn btn-ghost">
     Mark Complete and View Course
   </button>
 </form>
 {% else %}
-<form action="{% url 'assignment-incomplete' assignment.id %}" method="post">
+<form action="{% url 'assignment-incomplete' assignment.id %}" method="post" class="assignment-actions">
   {% csrf_token %}
-  <button type="submit">Mark Incomplete</button>
-  <button type="submit" name="redirect_to" value="course">
+  <button type="submit" class="btn btn-course">Mark Incomplete</button>
+  <button type="submit" name="redirect_to" value="course" class="btn btn-ghost">
     Mark Incomplete and View Course
   </button>
 </form>
-{% endif %} {% endblock %}
+{% endif %}
+</section>
+{% endblock %}

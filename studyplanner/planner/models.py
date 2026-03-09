@@ -14,15 +14,41 @@ PRIORITY_CHOICES = [
     ("high", "High"),
 ]
 
+COURSE_COLOR_CHOICES = [
+    ("slate", "Slate"),
+    ("blue", "Blue"),
+    ("green", "Green"),
+    ("amber", "Amber"),
+    ("rose", "Rose"),
+    ("teal", "Teal"),
+]
+
 
 # Create your models here.
 class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course_code = models.CharField(max_length=20, blank=True)
     name = models.CharField(max_length=100)
+    term = models.CharField(max_length=50, blank=True)
     instructor = models.CharField(max_length=100, blank=True)
-    color = models.CharField(max_length=20, blank=True)
+    meeting_days = models.CharField(max_length=50, blank=True)
+    meeting_time = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    zoom_link = models.URLField(blank=True)
+    office_hours = models.CharField(max_length=200, blank=True)
+    syllabus_url = models.URLField(blank=True)
+    syllabus_file = models.FileField(upload_to="syllabi/", blank=True, null=True)
+    grading_notes = models.TextField(blank=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    notes = models.TextField(blank=True)
+    color = models.CharField(
+        max_length=20, choices=COURSE_COLOR_CHOICES, blank=True, default="slate"
+    )
 
     def __str__(self):
+        if self.course_code:
+            return f"{self.course_code} {self.name}"
         return self.name
 
     def get_absolute_url(self):

@@ -1,32 +1,130 @@
 {% extends "base.html" %} {% block content %}
-<h1>{{ course.name }}</h1>
-<p>Instructor: {{ course.instructor|default:"-" }}</p>
-<p>
-  Completed Assignments: {{ completed_assignments_count }} / {{ total_assignments_count }}
-</p>
+<section class="card course-panel course-theme-{{ course.color|default:'slate' }}">
+<div class="course-heading">
+  <h1>
+    {% if course.course_code %}{{ course.course_code }} - {% endif %}{{ course.name }}
+  </h1>
+  <span class="course-badge">{{ course.get_color_display }}</span>
+</div>
+<div class="detail-grid">
+  <div class="detail-row">
+    <span class="detail-label">Term</span>
+    <span class="detail-value">{{ course.term|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Instructor</span>
+    <span class="detail-value">{{ course.instructor|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Meeting Days</span>
+    <span class="detail-value">{{ course.meeting_days|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Meeting Time</span>
+    <span class="detail-value">{{ course.meeting_time|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Location</span>
+    <span class="detail-value">{{ course.location|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Zoom Link</span>
+    <span class="detail-value">
+      {% if course.zoom_link %}
+      <a
+        href="{{ course.zoom_link }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-link"
+      >
+        Join Class
+      </a>
+      {% else %}
+      -
+      {% endif %}
+    </span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Office Hours</span>
+    <span class="detail-value">{{ course.office_hours|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Schedule</span>
+    <span class="detail-value">
+      {% if course.start_date or course.end_date %}
+      {{ course.start_date|default:"?" }} to {{ course.end_date|default:"?" }}
+      {% else %}
+      -
+      {% endif %}
+    </span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Syllabus URL</span>
+    <span class="detail-value">
+      {% if course.syllabus_url %}
+      <a
+        href="{{ course.syllabus_url }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-link"
+      >
+        Open Syllabus
+      </a>
+      {% else %}
+      -
+      {% endif %}
+    </span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Syllabus File</span>
+    <span class="detail-value">
+      {% if course.syllabus_file %}
+      <a href="{{ course.syllabus_file.url }}" class="text-link">Download File</a>
+      {% else %}
+      -
+      {% endif %}
+    </span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Grading Notes</span>
+    <span class="detail-value">{{ course.grading_notes|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Personal Notes</span>
+    <span class="detail-value">{{ course.notes|default:"-" }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="detail-label">Completed Assignments</span>
+    <span class="detail-value">
+      {{ completed_assignments_count }} / {{ total_assignments_count }}
+    </span>
+  </div>
+</div>
 
-<p>
-  <a href="{% url 'course-update' course.id %}">Edit Course</a>
-  <a href="{% url 'course-delete' course.id %}">Delete Course</a>
-</p>
+<div class="actions">
+  <a href="{% url 'course-update' course.id %}" class="btn btn-course">Edit Course</a>
+  <a href="{% url 'course-delete' course.id %}" class="btn btn-ghost">Delete Course</a>
+</div>
 
 <hr />
 
 <h2>Assignments</h2>
-<p>
-  <a href="{% url 'assignment-create' course.id %}">Add Assignment</a>
-</p>
+<div class="actions">
+  <a href="{% url 'assignment-create' course.id %}" class="btn btn-course">Add Assignment</a>
+  <a href="{% url 'assignment-list' %}" class="btn btn-ghost">View All Assignments</a>
+</div>
 
-<ul>
+<ul class="assignment-list">
   {% for assignment in assignments %}
-  <li>
+  <li class="course-theme-{{ course.color|default:'slate' }}">
     <a href="{% url 'assignment-detail' assignment.id %}">
       {{ assignment.title }}
     </a>
-    (due {{ assignment.due_date }})
+    <span class="assignment-meta">due {{ assignment.due_date }}</span>
   </li>
   {% empty %}
   <li>No assignments yet.</li>
   {% endfor %}
 </ul>
+  </section>
 {% endblock %}

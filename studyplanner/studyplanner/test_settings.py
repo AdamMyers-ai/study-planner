@@ -11,3 +11,5 @@ DATABASES = {
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
+
+MEDIA_ROOT = Path("/tmp/studyplanner_test_media")  # noqa: F405
