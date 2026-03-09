@@ -360,6 +360,20 @@ button {
   color: var(--text);
 }
 
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
+button:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+input[type="reset"]:disabled {
+  cursor: not-allowed;
+}
+
 input,
 select,
 textarea {
