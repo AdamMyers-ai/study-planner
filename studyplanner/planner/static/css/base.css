@@ -5,13 +5,20 @@
 :root {
   --bg: #0f1720;
   --panel: #1a2430;
+  --panel-soft: rgba(255, 255, 255, 0.03);
   --panel-border: #31404f;
+  --header-bg: #17212b;
+  --field-bg: #111922;
   --text: #f3f4f6;
   --muted: #c7ced6;
   --link: #f2c46d;
   --link-hover: #ffe2a3;
   --button: #f2c46d;
   --button-text: #17202a;
+  --danger-border: rgba(225, 29, 72, 0.4);
+  --danger-bg: rgba(225, 29, 72, 0.12);
+  --danger-text: #fecdd3;
+  --message-bg: rgba(242, 196, 109, 0.12);
   --course-general: #64748b;
   --course-computer-science: #2563eb;
   --course-mathematics: #0f766e;
@@ -32,6 +39,14 @@
   --course-health-sciences: #0f766e;
   --course-philosophy: #78716c;
   --course-law: #1d4ed8;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 body {
@@ -57,20 +72,22 @@ h3 {
   font-family: Georgia, serif;
 }
 
-.container {
+.container,
+.nav-wrap {
   max-width: 960px;
   margin: 0 auto;
+}
+
+.container {
   padding: 24px 20px 40px;
 }
 
 .site-header {
-  background-color: #17212b;
+  background-color: var(--header-bg);
   border-bottom: 1px solid var(--panel-border);
 }
 
 .nav-wrap {
-  max-width: 960px;
-  margin: 0 auto;
   padding: 14px 20px;
   display: flex;
   justify-content: space-between;
@@ -142,6 +159,10 @@ h3 {
   color: var(--muted);
 }
 
+.page-subtitle {
+  margin: 0;
+}
+
 .dashboard-grid {
   display: grid;
   gap: 16px;
@@ -168,7 +189,7 @@ h3 {
 .course-list li,
 .assignment-list li,
 .resource-list li {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: var(--panel-soft);
   border: 1px solid var(--panel-border);
   border-left: 6px solid var(--course-color, var(--course-general));
   border-radius: 10px;
@@ -178,6 +199,14 @@ h3 {
 
 .resource-list li {
   --course-color: var(--course-history);
+}
+
+.messages li {
+  border-left: 4px solid var(--button);
+  background-color: var(--message-bg);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
 }
 
 .course-heading {
@@ -275,8 +304,16 @@ h3 {
   color: var(--text);
 }
 
+.btn-ghost:hover {
+  color: var(--text);
+}
+
 .btn-course {
   background-color: var(--course-color, var(--course-general));
+  color: white;
+}
+
+.btn-course:hover {
   color: white;
 }
 
@@ -307,9 +344,9 @@ h3 {
   padding: 10px 12px;
   list-style: none;
   border-radius: 10px;
-  border: 1px solid rgba(225, 29, 72, 0.4);
-  background-color: rgba(225, 29, 72, 0.12);
-  color: #fecdd3;
+  border: 1px solid var(--danger-border);
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
 }
 
 input,
@@ -319,12 +356,28 @@ button {
   padding: 10px 12px;
   border: 1px solid var(--panel-border);
   border-radius: 10px;
-  background-color: #111922;
+  background-color: var(--field-bg);
   color: var(--text);
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
 }
 
 textarea {
   min-height: 110px;
+  resize: vertical;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
 }
 
 label {
@@ -337,13 +390,6 @@ label {
 
 form p {
   margin: 0 0 16px;
-}
-
-.message {
-  border-left: 4px solid var(--button);
-  background-color: rgba(242, 196, 109, 0.12);
-  border-radius: 10px;
-  padding: 12px 14px;
 }
 
 .text-link {
@@ -440,7 +486,7 @@ form p {
 @media (max-width: 640px) {
   .nav-wrap {
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
   }
 
   .page-header {

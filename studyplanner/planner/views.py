@@ -71,7 +71,7 @@ class SignUpView(FormView):
             next_url, allowed_hosts={self.request.get_host()}
         ):
             return next_url
-        return reverse_lazy("course-list")
+        return reverse_lazy("home")
 
     def form_valid(self, form):
         user = form.save()

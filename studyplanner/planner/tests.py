@@ -14,13 +14,13 @@ class AuthFlowTests(TestCase):
             username="testuser", password="StrongPass123!"
         )
 
-    def test_login_redirects_to_course_list_by_default(self):
+    def test_login_redirects_to_dashboard_by_default(self):
         response = self.client.post(
             reverse("login"),
             {"username": "testuser", "password": "StrongPass123!"},
         )
 
-        self.assertRedirects(response, reverse("course-list"))
+        self.assertRedirects(response, reverse("home"))
 
     def test_login_template_preserves_next_parameter(self):
         response = self.client.get(reverse("login"), {"next": reverse("course-list")})
@@ -42,7 +42,7 @@ class AuthFlowTests(TestCase):
 
         self.assertRedirects(response, reverse("resource-list"))
 
-    def test_signup_redirects_to_course_list_by_default(self):
+    def test_signup_redirects_to_dashboard_by_default(self):
         response = self.client.post(
             reverse("signup"),
             {
@@ -52,7 +52,7 @@ class AuthFlowTests(TestCase):
             },
         )
 
-        self.assertRedirects(response, reverse("course-list"))
+        self.assertRedirects(response, reverse("home"))
         self.assertTrue("_auth_user_id" in self.client.session)
 
     def test_signup_redirects_to_safe_next_when_present(self):
@@ -79,7 +79,7 @@ class AuthFlowTests(TestCase):
             },
         )
 
-        self.assertRedirects(response, reverse("course-list"))
+        self.assertRedirects(response, reverse("home"))
 
     def test_logout_redirects_to_home(self):
         self.client.force_login(self.user)
