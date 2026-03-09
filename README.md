@@ -87,9 +87,13 @@ pipenv run python manage.py test --settings=studyplanner.test_settings
 
 ## Screenshots
 ![Dashboard](assets/screenshots/image.png)
+
 ![Course Index Page](assets/screenshots/image-1.png)
+
 ![Course Detail Page](assets/screenshots/image-2.png)
+
 ![Assignment Index Page](assets/screenshots/image-4.png)
+
 ![Assignment Detail Page](assets/screenshots/image-3.png)
 
 ## Technologies Used
@@ -107,7 +111,7 @@ pipenv run python manage.py test --settings=studyplanner.test_settings
 
 ## Attributions
 
-- Logo concept and SVG asset were created with assistance from ChatGPT.
+- Logo concept created with assistance from ChatGPT.
 - [Django documentation](https://docs.djangoproject.com/en/5.2/)
 - [WhiteNoise documentation](https://whitenoise.readthedocs.io/)
 - [PostgreSQL documentation](https://www.postgresql.org/docs/)
