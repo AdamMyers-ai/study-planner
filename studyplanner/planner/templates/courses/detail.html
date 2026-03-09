@@ -121,6 +121,9 @@
       {{ assignment.title }}
     </a>
     <span class="assignment-meta">due {{ assignment.due_date }}</span>
+    {% if assignment.is_due_soon %}
+    <span class="assignment-meta">⚠ Due Soon</span>
+    {% endif %}
   </li>
   {% empty %}
   <li>No assignments yet.</li>

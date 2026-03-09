@@ -59,7 +59,7 @@
     <span class="assignment-meta">{{ assignment.get_status_display }}</span>
     <span class="assignment-meta">{{ assignment.get_priority_display }}</span>
     {% if assignment.is_due_soon %}
-    <span class="assignment-meta">Due Soon</span>
+    <span class="assignment-meta">⚠ Due Soon</span>
     {% endif %}
   </li>
   {% empty %}

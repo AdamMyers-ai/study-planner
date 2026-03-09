@@ -10,7 +10,12 @@
 <div class="detail-grid">
   <div class="detail-row">
     <span class="detail-label">Due</span>
-    <span class="detail-value">{{ assignment.due_date }}</span>
+    <span class="detail-value">
+      {{ assignment.due_date }}
+      {% if assignment.is_due_soon %}
+      <span class="assignment-meta">Due Soon</span>
+      {% endif %}
+    </span>
   </div>
   <div class="detail-row">
     <span class="detail-label">Status</span>
@@ -25,6 +30,30 @@
     <span class="detail-value">{{ assignment.notes|default:"-" }}</span>
   </div>
 </div>
+
+{% if assignment.is_due_soon %}
+<p>⚠ Due Soon</p>
+{% endif %}
+
+<h2>Study Resources</h2>
+<ul class="resource-list">
+  {% for resource in assignment.resources.all %}
+  <li>
+    {% if resource.url %}
+    <a href="{{ resource.url }}" target="_blank" rel="noopener noreferrer">
+      {{ resource.title }}
+    </a>
+    {% else %}
+    {{ resource.title }}
+    {% endif %}
+    {% if resource.resource_type %}
+    <span class="resource-meta">- {{ resource.resource_type }}</span>
+    {% endif %}
+  </li>
+  {% empty %}
+  <li>No resources attached.</li>
+  {% endfor %}
+</ul>
 
 <div class="assignment-actions">
   <a href="{% url 'assignment-update' assignment.id %}" class="btn btn-course">Edit</a>

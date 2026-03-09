@@ -169,9 +169,23 @@ class CourseDeleteView(LoginRequiredMixin, DeleteView):
 class AssignmentDetailView(LoginRequiredMixin, DetailView):
     model = Assignment
     template_name = "assignments/detail.html"
+    context_object_name = "assignment"
 
     def get_queryset(self):
         return Assignment.objects.filter(course__user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        today = date.today()
+        soon = today + timedelta(days=2)
+        assignment = context["assignment"]
+
+        assignment.is_due_soon = (
+            assignment.status != "done" and today <= assignment.due_date <= soon
+        )
+
+        return context
 
 
 class AssignmentCreateView(LoginRequiredMixin, CreateView):
