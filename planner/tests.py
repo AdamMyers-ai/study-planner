@@ -1,5 +1,4 @@
 from datetime import date
-
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
@@ -382,3 +381,34 @@ class StudyResourceViewTests(TestCase):
             response, reverse("assignment-detail", args=[self.assignment.pk])
         )
         self.assertIn(resource, self.assignment.resources.all())
+
+    def test_assignment_create_view_links_to_resource_create_with_return_url(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("assignment-create", args=[self.course.pk]))
+
+        expected_next = reverse("assignment-create", args=[self.course.pk])
+        self.assertContains(
+            response,
+            f'{reverse("resource-create")}?next={expected_next}',
+        )
+
+    def test_create_resource_with_next_redirects_back_to_assignment_create(self):
+        self.client.force_login(self.user)
+        next_url = reverse("assignment-create", args=[self.course.pk])
+
+        response = self.client.post(
+            reverse("resource-create"),
+            {
+                "title": "Balancing Equations Notes",
+                "url": "https://example.com/notes",
+                "resource_type": "article",
+                "description": "Reference notes for the assignment.",
+                "next": next_url,
+            },
+        )
+
+        resource = StudyResource.objects.get(title="Balancing Equations Notes")
+
+        self.assertRedirects(response, next_url)
+        self.assertEqual(resource.user, self.user)

@@ -212,6 +212,11 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return self.course.get_absolute_url()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["course"] = self.course
+        return context
+
 
 class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Assignment
@@ -279,6 +284,14 @@ class StudyResourceCreateView(LoginRequiredMixin, CreateView):
             )
         return super().dispatch(request, *args, **kwargs)
 
+    def get_next_url(self):
+        next_url = self.request.POST.get("next") or self.request.GET.get("next")
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url, allowed_hosts={self.request.get_host()}
+        ):
+            return next_url
+        return ""
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         response = super().form_valid(form)
@@ -290,11 +303,14 @@ class StudyResourceCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         if self.assignment is not None:
             return reverse_lazy("assignment-detail", kwargs={"pk": self.assignment.pk})
+        if next_url := self.get_next_url():
+            return next_url
         return super().get_success_url()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["assignment"] = self.assignment
+        context["next_url"] = self.get_next_url()
         return context
 
 

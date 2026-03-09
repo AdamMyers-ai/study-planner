@@ -40,13 +40,18 @@
     {% if form.resources %}
     <div class="form-row">
       {{ form.resources.label_tag }} {{ form.resources }} {{ form.resources.errors }}
-      {% if object %}
       <div class="actions">
+        {% if object %}
         <a href="{% url 'assignment-resource-create' object.id %}" class="btn btn-ghost">
           Add New Resource
         </a>
+        {% else %}
+        {% url 'assignment-create' course.id as assignment_create_url %}
+        <a href="{% url 'resource-create' %}?next={{ assignment_create_url|urlencode }}" class="btn btn-ghost">
+          Add New Resource
+        </a>
+        {% endif %}
       </div>
-      {% endif %}
     </div>
     {% endif %}
 
@@ -55,7 +60,7 @@
       {% if object %}
       <a href="{% url 'course-detail' object.course.id %}" class="btn btn-ghost">Cancel</a>
       {% else %}
-      <a href="javascript:history.back()" class="btn btn-ghost">Cancel</a>
+      <a href="{% url 'course-detail' course.id %}" class="btn btn-ghost">Cancel</a>
       {% endif %}
     </div>
   </form>
