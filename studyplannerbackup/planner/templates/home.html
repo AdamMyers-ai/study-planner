@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Home | Study Planner{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="page-header">
+    <h1>
+      {% if user.is_authenticated %}Dashboard{% else %}Welcome to Study
+      Planner{% endif %}
+    </h1>
+    <p class="page-subtitle">
+      {% if user.is_authenticated %} Track deadlines, priorities, and course
+      momentum in one place. {% else %} Organize courses, assignments, and
+      study resources without digging through tabs. {% endif %}
+    </p>
+  </div>
+
+  {% if user.is_authenticated %}
+  <div class="actions">
+    <a href="{% url 'course-list' %}" class="btn">View Courses</a>
+    <a href="{% url 'resource-list' %}" class="btn btn-ghost">View Resources</a>
+  </div>
+
+  <div class="dashboard-grid">
+    <section class="surface">
+      <h2>Due Today</h2>
+      <ul class="assignment-list">
+        {% for assignment in due_today_assignments %}
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
+          <a href="{% url 'assignment-detail' assignment.id %}">
+            {{ assignment.title }}
+          </a>
+          <span class="course-chip">{{ assignment.course.name }}</span>
+        </li>
+        {% empty %}
+        <li>No assignments due today.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="surface">
+      <h2>Due This Week</h2>
+      <ul class="assignment-list">
+        {% for assignment in due_this_week_assignments %}
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
+          <a href="{% url 'assignment-detail' assignment.id %}">
+            {{ assignment.title }}
+          </a>
+          <span class="course-chip">{{ assignment.course.name }}</span>
+          <span class="assignment-meta">due {{ assignment.due_date }}</span>
+        </li>
+        {% empty %}
+        <li>No assignments due this week.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="surface">
+      <h2>Overdue</h2>
+      <ul class="assignment-list">
+        {% for assignment in overdue_assignments %}
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
+          <a href="{% url 'assignment-detail' assignment.id %}">
+            {{ assignment.title }}
+          </a>
+          <span class="course-chip">{{ assignment.course.name }}</span>
+          <span class="assignment-meta">due {{ assignment.due_date }}</span>
+        </li>
+        {% empty %}
+        <li>No overdue assignments.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="surface">
+      <h2>High Priority</h2>
+      <ul class="assignment-list">
+        {% for assignment in high_priority_assignments %}
+        <li class="course-theme-{{ assignment.course.department|default:'general' }}">
+          <a href="{% url 'assignment-detail' assignment.id %}">
+            {{ assignment.title }}
+          </a>
+          <span class="course-chip">{{ assignment.course.name }}</span>
+        </li>
+        {% empty %}
+        <li>No high priority assignments.</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  {% else %}
+  <p>Please sign up or log in to manage your courses and assignments.</p>
+
+  <div class="actions">
+    <a href="{% url 'signup' %}" class="btn">Sign Up</a>
+    <a href="{% url 'login' %}" class="btn">Login</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

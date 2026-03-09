@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Study Planner{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=20260308b" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a href="{% url 'home' %}" class="brand">Home</a>
+
+        <nav class="nav">
+          {% if user.is_authenticated %}
+          <a href="{% url 'course-list' %}">Courses</a>
+          <a href="{% url 'course-create' %}">Add Course</a>
+          <a href="{% url 'resource-list' %}">Resources</a>
+          <form action="{% url 'logout' %}" class="logout-form" method="post">
+            {% csrf_token %}
+            <button class="btn btn-ghost" type="submit">Logout</button>
+          </form>
+          {% else %}
+          <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'signup' %}">Sign Up</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <small>{% now "Y" %} Study Planner</small>
+    </footer>
+  </body>
+</html>

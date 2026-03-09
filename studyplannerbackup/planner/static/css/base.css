@@ -1,0 +1,505 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0f1720;
+  --panel: #1a2430;
+  --panel-soft: rgba(255, 255, 255, 0.03);
+  --panel-border: #31404f;
+  --header-bg: #17212b;
+  --field-bg: #111922;
+  --text: #f3f4f6;
+  --muted: #c7ced6;
+  --link: #f2c46d;
+  --link-hover: #ffe2a3;
+  --button: #f2c46d;
+  --button-text: #17202a;
+  --danger-border: rgba(225, 29, 72, 0.4);
+  --danger-bg: rgba(225, 29, 72, 0.12);
+  --danger-text: #fecdd3;
+  --message-bg: rgba(242, 196, 109, 0.12);
+  --course-general: #64748b;
+  --course-computer-science: #2563eb;
+  --course-mathematics: #0f766e;
+  --course-engineering: #4f46e5;
+  --course-business: #15803d;
+  --course-economics: #65a30d;
+  --course-history: #d97706;
+  --course-science: #16a34a;
+  --course-humanities: #e11d48;
+  --course-psychology: #9333ea;
+  --course-political-science: #b91c1c;
+  --course-english: #c2410c;
+  --course-languages: #0891b2;
+  --course-arts-design: #db2777;
+  --course-music: #7c3aed;
+  --course-communications: #0284c7;
+  --course-education: #ca8a04;
+  --course-health-sciences: #0f766e;
+  --course-philosophy: #78716c;
+  --course-law: #1d4ed8;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Trebuchet MS", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, serif;
+}
+
+.container,
+.nav-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.container {
+  padding: 24px 20px 40px;
+}
+
+.site-header {
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.nav-wrap {
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand {
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  color: var(--text);
+}
+
+.logout-form {
+  margin: 0;
+}
+
+.card,
+.surface {
+  background-color: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.page-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+  margin-bottom: 18px;
+}
+
+.page-header h1,
+.course-heading h1 {
+  margin: 0;
+}
+
+.page-header h1,
+.page-header .page-subtitle {
+  grid-column: 1;
+}
+
+.page-header > .btn {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.page-subtitle,
+.course-meta,
+.assignment-meta,
+.resource-meta,
+.detail-label {
+  color: var(--muted);
+}
+
+.page-subtitle {
+  margin: 0;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.surface h2 {
+  margin-top: 0;
+}
+
+.course-panel {
+  border-left: 8px solid var(--course-color, var(--course-general));
+}
+
+.course-list,
+.assignment-list,
+.resource-list,
+.messages {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+
+.course-list li,
+.assignment-list li,
+.resource-list li {
+  background-color: var(--panel-soft);
+  border: 1px solid var(--panel-border);
+  border-left: 6px solid var(--course-color, var(--course-general));
+  border-radius: 10px;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+}
+
+.resource-list li {
+  --course-color: var(--course-history);
+}
+
+.messages li {
+  border-left: 4px solid var(--button);
+  background-color: var(--message-bg);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+}
+
+.course-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.course-badge,
+.course-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--course-color, var(--course-general));
+  color: var(--text);
+}
+
+.course-badge::before,
+.course-chip::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--course-color, var(--course-general));
+}
+
+.detail-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 12px;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  color: var(--text);
+}
+
+.actions,
+.assignment-actions,
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.actions,
+.assignment-actions {
+  margin-top: 16px;
+}
+
+.filters {
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.filters .field {
+  min-width: 180px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background-color: var(--button);
+  color: var(--button-text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn:hover {
+  color: var(--button-text);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  border-color: var(--panel-border);
+  color: var(--text);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+}
+
+.btn-course {
+  background-color: var(--course-color, var(--course-general));
+  color: white;
+}
+
+.btn-course:hover {
+  color: white;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.form-row {
+  display: grid;
+  gap: 8px;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  width: min(100%, 520px);
+}
+
+.form-row select[multiple] {
+  min-height: 140px;
+}
+
+.form-errors,
+.errorlist {
+  margin: 0;
+  padding: 10px 12px;
+  list-style: none;
+  border-radius: 10px;
+  border: 1px solid var(--danger-border);
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+input,
+select,
+textarea,
+button {
+  padding: 10px 12px;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  background-color: var(--field-bg);
+  color: var(--text);
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+form p {
+  margin: 0 0 16px;
+}
+
+.text-link {
+  color: var(--link);
+}
+
+.site-footer {
+  border-top: 1px solid var(--panel-border);
+  text-align: center;
+  padding: 18px;
+  color: var(--muted);
+}
+
+.course-theme-general {
+  --course-color: var(--course-general);
+}
+
+.course-theme-computer_science {
+  --course-color: var(--course-computer-science);
+}
+
+.course-theme-mathematics {
+  --course-color: var(--course-mathematics);
+}
+
+.course-theme-engineering {
+  --course-color: var(--course-engineering);
+}
+
+.course-theme-business {
+  --course-color: var(--course-business);
+}
+
+.course-theme-economics {
+  --course-color: var(--course-economics);
+}
+
+.course-theme-history {
+  --course-color: var(--course-history);
+}
+
+.course-theme-science {
+  --course-color: var(--course-science);
+}
+
+.course-theme-humanities {
+  --course-color: var(--course-humanities);
+}
+
+.course-theme-psychology {
+  --course-color: var(--course-psychology);
+}
+
+.course-theme-political_science {
+  --course-color: var(--course-political-science);
+}
+
+.course-theme-english {
+  --course-color: var(--course-english);
+}
+
+.course-theme-languages {
+  --course-color: var(--course-languages);
+}
+
+.course-theme-arts_design {
+  --course-color: var(--course-arts-design);
+}
+
+.course-theme-music {
+  --course-color: var(--course-music);
+}
+
+.course-theme-communications {
+  --course-color: var(--course-communications);
+}
+
+.course-theme-education {
+  --course-color: var(--course-education);
+}
+
+.course-theme-health_sciences {
+  --course-color: var(--course-health-sciences);
+}
+
+.course-theme-philosophy {
+  --course-color: var(--course-philosophy);
+}
+
+.course-theme-law {
+  --course-color: var(--course-law);
+}
+
+@media (max-width: 640px) {
+  .nav-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-header {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header > .btn {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+
+  .detail-row {
+    grid-template-columns: 1fr;
+  }
+}

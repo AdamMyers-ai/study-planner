@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <h1>My Resources</h1>
+  <p class="page-subtitle">Keep articles, videos, and notes close to the courses they support.</p>
+  <a href="{% url 'resource-create' %}" class="btn">Add Resource</a>
+</div>
+
+<ul class="resource-list">
+  {% for resource in resources %}
+  <li>
+    <a href="{% url 'resource-detail' resource.id %}">{{ resource.title }}</a>
+    {% if resource.resource_type %}
+    <span class="resource-meta">({{ resource.get_resource_type_display }})</span>
+    {% endif %}
+  </li>
+  {% empty %}
+  <li>No resources yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

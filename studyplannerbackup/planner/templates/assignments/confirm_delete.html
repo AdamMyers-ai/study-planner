@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card course-panel course-theme-{{ object.course.department|default:'general' }}">
+  <h1>Delete Assignment</h1>
+  <p>Are you sure you want to delete "{{ object.title }}"?</p>
+
+  <div class="actions">
+    <a href="{% url 'course-detail' object.course.id %}" class="btn btn-ghost">
+      Back to Course
+    </a>
+    <a href="{% url 'assignment-detail' object.id %}" class="btn btn-ghost">
+      Back to Assignment
+    </a>
+  </div>
+
+  <form method="post" class="actions">
+    {% csrf_token %}
+    <button type="submit" class="btn">Yes, delete</button>
+    <a href="{% url 'course-detail' object.course.id %}" class="btn btn-ghost">Cancel</a>
+  </form>
+</section>
+{% endblock %}
